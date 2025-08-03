@@ -7,10 +7,11 @@ import { DeleteButton } from "@/components/blog/delete-button";
 export default async function BlogPost({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const session = await getSession();
-  const post = await getBlogPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
   const isUserAdmin = session ? isAdmin(session.user.email) : false;
 
   if (!session) {
