@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
       if (!isAdmin(session.user.email)) {
         return NextResponse.redirect(new URL("/", request.url));
       }
-    } catch (error) {
+    } catch {
       // If there's an error, redirect to login
       return NextResponse.redirect(new URL("/login", request.url));
     }

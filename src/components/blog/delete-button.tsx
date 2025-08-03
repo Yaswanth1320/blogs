@@ -59,7 +59,7 @@ export function DeleteButton({ slug, title }: DeleteButtonProps) {
           },
         });
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(loadingToast);
       toast.error("Error deleting blog post", {
         description: "An unexpected error occurred. Please try again.",
@@ -88,8 +88,8 @@ export function DeleteButton({ slug, title }: DeleteButtonProps) {
         <DialogHeader>
           <DialogTitle>Delete Blog Post</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete "{title}"? This action cannot be
-            undone.
+            Are you sure you want to delete &quot;{title}&quot;? This action
+            cannot be undone.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

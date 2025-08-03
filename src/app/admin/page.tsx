@@ -64,7 +64,7 @@ export default function AdminPage() {
           },
         });
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(loadingToast);
       toast.error("Error creating blog post", {
         description: "An unexpected error occurred. Please try again.",
@@ -126,7 +126,9 @@ export default function AdminPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="title">Title</Label>
+                <Label htmlFor="title" className="mb-1">
+                  Title
+                </Label>
                 <Input
                   id="title"
                   name="title"
@@ -137,7 +139,9 @@ export default function AdminPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="slug">Slug</Label>
+                <Label htmlFor="slug" className="mb-1">
+                  Slug
+                </Label>
                 <div className="flex gap-2">
                   <Input
                     id="slug"
@@ -160,7 +164,9 @@ export default function AdminPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="icon">Icon</Label>
+                <Label htmlFor="icon" className="mb-1">
+                  Icon
+                </Label>
                 <Input
                   id="icon"
                   name="icon"
@@ -171,7 +177,9 @@ export default function AdminPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="category">Category</Label>
+                <Label htmlFor="category" className="mb-1">
+                  Category
+                </Label>
                 <Input
                   id="category"
                   name="category"
@@ -184,27 +192,31 @@ export default function AdminPage() {
             </div>
 
             <div>
-              <Label htmlFor="excerpt">Excerpt</Label>
+              <Label htmlFor="excerpt" className="mb-1">
+                Excerpt
+              </Label>
               <Textarea
                 id="excerpt"
                 name="excerpt"
                 value={formData.excerpt}
                 onChange={handleInputChange}
                 placeholder="Brief description of the blog post"
-                rows={3}
+                rows={4}
                 required
               />
             </div>
 
             <div>
-              <Label htmlFor="content">Content</Label>
+              <Label htmlFor="content" className="mb-1">
+                Content
+              </Label>
               <Textarea
                 id="content"
                 name="content"
                 value={formData.content}
                 onChange={handleInputChange}
                 placeholder="Write your blog post content here..."
-                rows={15}
+                rows={20}
                 required
               />
             </div>

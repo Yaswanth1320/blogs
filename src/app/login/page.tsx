@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { authClient } from "@/lib/auth-client";
+
 import LoginButtons from "@/components/auth/login-buttons";
 
 const LoginPage = async () => {
