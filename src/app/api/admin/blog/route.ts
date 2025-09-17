@@ -49,7 +49,6 @@ export async function POST(request: NextRequest) {
     // Insert the blog post into the database
     await db.insert(blogPosts).values(newPost);
 
-    console.log("Blog post created:", newPost);
 
     return NextResponse.json({
       message: "Blog post created successfully",

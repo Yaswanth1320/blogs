@@ -44,7 +44,6 @@ export async function DELETE(
       );
     }
 
-    console.log("Blog post deleted:", result[0]);
 
     return NextResponse.json({
       message: "Blog post deleted successfully",

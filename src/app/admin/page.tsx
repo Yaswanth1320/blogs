@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import dynamic from "next/dynamic";
+
+// Import the editor dynamically to avoid SSR issues
+const SimpleMdeEditor = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+  loading: () => <p>Loading editor...</p>
+});
 
 export default function AdminPage() {
   const router = useRouter();
@@ -20,6 +27,24 @@ export default function AdminPage() {
     category: "Programming",
     slug: "",
   });
+  
+  // Load SimpleMDE CSS on the client side
+  useEffect(() => {
+    const loadCSS = async () => {
+      try {
+        // Use direct CDN link for the editor CSS
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://unpkg.com/easymde/dist/easymde.min.css';
+        document.head.appendChild(link);
+      } catch (error) {
+        console.error('Failed to load editor CSS:', error);
+      }
+    };
+    
+    loadCSS();
+  }, []);
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -208,17 +233,26 @@ export default function AdminPage() {
 
             <div>
               <Label htmlFor="content" className="mb-1">
-                Content
+                Content (Markdown)
               </Label>
-              <Textarea
-                id="content"
-                name="content"
-                value={formData.content}
-                onChange={handleInputChange}
-                placeholder="Write your blog post content here..."
-                rows={20}
-                required
-              />
+              <div className="editor-wrapper" style={{ zIndex: 1 }}>
+                <SimpleMdeEditor
+                  id="content"
+                  value={formData.content}
+                  onChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
+                  options={{
+                    spellChecker: false,
+                    placeholder: "Write your blog post content here using Markdown...",
+                    status: ["lines", "words", "cursor"],
+                    autosave: {
+                      enabled: true,
+                      delay: 1000,
+                      uniqueId: "blog-post-content"
+                    }
+                  }}
+                  className="w-full"
+                />
+              </div>
             </div>
 
             <div className="flex gap-4">

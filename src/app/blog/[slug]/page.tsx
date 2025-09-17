@@ -3,6 +3,9 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getBlogPostBySlug } from "@/lib/blog";
 import { DeleteButton } from "@/components/blog/delete-button";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import "@/app/markdown.css";
 
 export default async function BlogPost({
   params,
@@ -22,7 +25,7 @@ export default async function BlogPost({
   }
 
   return (
-    <article className="max-w-3xl mx-auto">
+    <article className="max-w-4xl mx-auto">
       <div className="mb-8">
         <Link href="/" className="nav-link text-sm mb-4 inline-block">
           ← Back to home
@@ -45,7 +48,15 @@ export default async function BlogPost({
 
       <div className="prose prose-invert max-w-none">
         <p className="text-lg text-gray-300 mb-8">{post.excerpt}</p>
-        <div className="text-gray-300 leading-relaxed">{post.content}</div>
+        <div className="bg-whitesmoke dark:bg-white p-8 shadow-md leading-relaxed w-full">
+          <div className="markdown-content text-gray-800 dark:text-black">
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm]}
+            >
+              {post.content}
+            </ReactMarkdown>
+          </div>
+        </div>
       </div>
 
       {isUserAdmin && (
