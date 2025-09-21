@@ -5,6 +5,8 @@ import { getBlogPostBySlug } from "@/lib/blog";
 import { DeleteButton } from "@/components/blog/delete-button";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { CodeBlock } from "@/components/ui/code-block";
+import { Components } from "react-markdown";
 import "@/app/markdown.css";
 
 export default async function BlogPost({
@@ -25,37 +27,62 @@ export default async function BlogPost({
   }
 
   return (
-    <article className="max-w-4xl mx-auto">
-      <div className="mb-8">
-        <Link href="/" className="nav-link text-sm mb-4 inline-block">
+    <article className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-12">
+        <Link href="/" className="nav-link text-sm mb-6 inline-block">
           ← Back to home
         </Link>
-        <time className="text-sm text-gray-400 block mb-2">
+        <time className="text-sm text-gray-400 block mb-4">
           {new Date(post.publishedAt).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
           })}
         </time>
-        <h1 className="text-3xl font-bold mb-6">{post.title}</h1>
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-2xl">{post.icon}</span>
-          <span className="text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded">
+        <h1 className="text-4xl font-bold mb-8 leading-tight text-white">
+          {post.title}
+        </h1>
+        <div className="flex items-center gap-3 mb-6">
+          <span className="text-3xl">{post.icon}</span>
+          <span className="text-sm text-green-400 bg-green-500/20 px-3 py-1.5 rounded-full border border-green-500/30">
             {post.category}
           </span>
         </div>
+        <p className="text-xl text-gray-300 leading-relaxed border-l-4 border-green-500 pl-6 py-4 bg-green-500/5 rounded-r-lg">
+          {post.excerpt}
+        </p>
       </div>
 
       <div className="prose prose-invert max-w-none">
-        <p className="text-lg text-gray-300 mb-8">{post.excerpt}</p>
-        <div className="bg-whitesmoke dark:bg-white p-8 shadow-md leading-relaxed w-full">
-          <div className="markdown-content text-gray-800 dark:text-black">
-            <ReactMarkdown 
-              remarkPlugins={[remarkGfm]}
-            >
-              {post.content}
-            </ReactMarkdown>
-          </div>
+        <div className="markdown-content">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={
+              {
+                code: ({ className, children, ...props }) => {
+                  const match = /language-(\w+)/.exec(className || "");
+                  const language = match ? match[1] : "";
+                  const isInline = !className?.includes("language-");
+
+                  if (!isInline && language) {
+                    return (
+                      <CodeBlock language={language} className={className}>
+                        {String(children).replace(/\n$/, "")}
+                      </CodeBlock>
+                    );
+                  }
+
+                  return (
+                    <code className={className} {...props}>
+                      {children}
+                    </code>
+                  );
+                },
+              } as Components
+            }
+          >
+            {post.content}
+          </ReactMarkdown>
         </div>
       </div>
 

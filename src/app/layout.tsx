@@ -41,7 +41,7 @@ export default async function RootLayout({
       </head>
       <body className="min-h-screen bg-background text-foreground flex flex-col">
         <nav className="p-6 border-b border-green-500/30 bg-black/50 backdrop-blur-sm">
-          <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <div className="max-w-5xl mx-auto flex items-center justify-between">
             <div className="flex space-x-6">
               <Link
                 href="/"
@@ -86,7 +86,7 @@ export default async function RootLayout({
             </div>
           </div>
         </nav>
-        <main className="flex-1 max-w-4xl mx-auto p-6 w-full">{children}</main>
+        <main className="flex-1 max-w-5xl mx-auto p-6 w-full">{children}</main>
         <Toaster />
         <footer className="p-6 border-t border-green-500/30 bg-black/50 backdrop-blur-sm mt-auto">
           <div className="max-w-4xl mx-auto flex items-center justify-between">
