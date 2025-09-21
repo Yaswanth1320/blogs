@@ -13,12 +13,13 @@ import dynamic from "next/dynamic";
 // Import the editor dynamically to avoid SSR issues
 const SimpleMdeEditor = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
-  loading: () => <p>Loading editor...</p>
+  loading: () => <p>Loading editor...</p>,
 });
 
 export default function AdminPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
@@ -27,24 +28,61 @@ export default function AdminPage() {
     category: "Programming",
     slug: "",
   });
-  
+
+  // Check authentication on component mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/auth/session");
+        if (!response.ok) {
+          router.push("/login");
+          return;
+        }
+
+        const data = await response.json();
+        if (!data.session) {
+          router.push("/login");
+          return;
+        }
+
+        setIsCheckingAuth(false);
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        router.push("/login");
+      }
+    };
+
+    checkAuth();
+  }, [router]);
+
   // Load SimpleMDE CSS on the client side
   useEffect(() => {
     const loadCSS = async () => {
       try {
         // Use direct CDN link for the editor CSS
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'https://unpkg.com/easymde/dist/easymde.min.css';
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "https://unpkg.com/easymde/dist/easymde.min.css";
         document.head.appendChild(link);
       } catch (error) {
-        console.error('Failed to load editor CSS:', error);
+        console.error("Failed to load editor CSS:", error);
       }
     };
-    
+
     loadCSS();
   }, []);
-  
+
+  // Show loading while checking authentication
+  if (isCheckingAuth) {
+    return (
+      <div className="max-w-4xl mx-auto p-6 flex items-center justify-center min-h-[50vh]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -239,16 +277,19 @@ export default function AdminPage() {
                 <SimpleMdeEditor
                   id="content"
                   value={formData.content}
-                  onChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
+                  onChange={(value) =>
+                    setFormData((prev) => ({ ...prev, content: value }))
+                  }
                   options={{
                     spellChecker: false,
-                    placeholder: "Write your blog post content here using Markdown...",
+                    placeholder:
+                      "Write your blog post content here using Markdown...",
                     status: ["lines", "words", "cursor"],
                     autosave: {
                       enabled: true,
                       delay: 1000,
-                      uniqueId: "blog-post-content"
-                    }
+                      uniqueId: "blog-post-content",
+                    },
                   }}
                   className="w-full"
                 />
