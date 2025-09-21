@@ -92,19 +92,19 @@ export function BlogPostSkeleton() {
       <div className="mb-12">
         {/* Back to home link */}
         <Skeleton className="h-4 w-28 mb-6" />
-        
+
         {/* Date */}
         <Skeleton className="h-4 w-32 mb-4" />
-        
+
         {/* Title */}
         <Skeleton className="h-10 w-4/5 mb-8" />
-        
+
         {/* Icon and Category */}
         <div className="flex items-center gap-3 mb-6">
           <Skeleton className="h-12 w-12 rounded-full" />
           <Skeleton className="h-8 w-24 rounded-full" />
         </div>
-        
+
         {/* Excerpt */}
         <div className="border-l-4 border-green-500 pl-6 py-4 bg-green-500/5 rounded-r-lg">
           <Skeleton className="h-6 w-full mb-2" />
@@ -122,7 +122,7 @@ export function BlogPostSkeleton() {
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-4/5" />
           </div>
-          
+
           {/* Code block skeleton */}
           <div className="bg-gray-900/50 border border-green-500/20 rounded-xl overflow-hidden">
             {/* Code block header */}
@@ -140,7 +140,7 @@ export function BlogPostSkeleton() {
               <Skeleton className="h-4 w-2/3" />
             </div>
           </div>
-          
+
           {/* More paragraph blocks */}
           <div className="space-y-3">
             <Skeleton className="h-4 w-full" />
@@ -148,10 +148,10 @@ export function BlogPostSkeleton() {
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-3/4" />
           </div>
-          
+
           {/* Heading skeleton */}
           <Skeleton className="h-8 w-1/2 mt-8 mb-4" />
-          
+
           {/* More content */}
           <div className="space-y-3">
             <Skeleton className="h-4 w-full" />
